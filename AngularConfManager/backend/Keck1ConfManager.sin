@@ -1,0 +1,269 @@
+#! @KPYTHON3@
+
+import sys
+import subprocess
+import os
+import urllib.request
+
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+from flask import Flask,render_template,jsonify,json,request#,login?
+from flask_cors import CORS, cross_origin
+# from flask_restful import Resource, Api
+
+#from fabric.api import *
+
+# config libraries/conf files
+import lib.KCWIConf, lib.LRISConf, lib.HIRESConf, lib.MOSFIREConf
+from lib.instrumentConf import *
+from lib.database_config import *
+
+
+# reldir = os.getenv('RELDIR')
+# datadir = os.path.join(reldir, 'data', 'Keck1ConfManager')
+datadir = os.path.dirname(os.path.realpath(__file__))
+
+# template_dir = os.path.join(datadir, 'templates')
+# template_dir = os.path.abspath(template_dir)
+
+static_dir = os.path.join(datadir, 'app')
+static_dir = os.path.abspath(static_dir)
+
+application = Flask(__name__,
+                    template_folder=datadir,
+                    static_folder=static_dir) # 4259
+
+CORS(application)
+
+# initialize database connections
+# uses instrumentConf.py functions and data
+outdir = 'export'
+client = MongoClient(DATABASE)
+db = {
+     'KCWI': instrumentDB(lib.KCWIConf.KCWI_CONF, client.KCWI, outdir),
+     'HIRES': instrumentDB(lib.HIRESConf.HIRES_CONF, client.HIRES, outdir),
+     'LRIS': instrumentDB(lib.LRISConf.LRIS_CONF, client.LRIS, outdir),
+     'MOSFIRE': instrumentDB(lib.MOSFIREConf.MOSFIRE_CONF, client.MOSFIRE, outdir)
+     }
+oberverDB = client.observer
+
+@application.route("/addConfiguration",methods=['POST'])
+def addConfiguration():
+    try:
+        json_data = request.json['info']
+        instrument = db[request.json['instrument']]
+        print(json_data)
+        instrument.put(json_data)
+        return jsonify(status='OK',message='inserted successfully')
+
+    except Exception as e:
+        return jsonify(status='ERROR',message=str(e))
+
+
+@application.route('/')
+def showConfigurationsList():
+    return render_template('index.html')
+
+
+@application.route('/getConfiguration',methods=['POST'])
+def getConfiguration():
+    #print(request.url_root)
+    #print(request.url)
+    #print(request.args)
+    #print(request.args.keys())
+    try:
+        instrument = db[request.json['instrument']]
+        configurationId = request.json['id']
+        configurationDetail=instrument.get(configurationId)
+        sys.stdout.write( "Retrieved this configuration %s\n" % (str(configurationDetail)))
+        return json.dumps(configurationDetail)
+    except Exception as e:
+        return str(e)
+        print(e)
+
+
+@application.route('/updateConfiguration',methods=['POST'])
+def updateConfiguration():
+    try:
+        instrument = db[request.json['instrument']]
+        data = request.json['info']
+        configurationId = request.json['id']
+        instrument.update(configurationId, data)
+        print('updated successfully')
+        return jsonify(status='OK',message='updated successfully')
+    except Exception as e:
+        return jsonify(status='ERROR',message=str(e))
+        print(e)
+
+
+@application.route("/getConfigurationList",methods=['POST'])
+def getConfigurationList():
+    try:
+        instrument = db[request.json['instrument']]
+        program = request.json['progname']
+        #program = 'prog1'
+        configurationList = instrument.get_all_configs(program)
+        #sys.stdout.write( str(json.dumps(configurationList)) + "\n")
+        # print(instrument,program,json.dumps(configurationList))
+
+        return json.dumps(configurationList)
+    except Exception as e:
+        return str(e)
+        print(e)
+
+
+
+@application.route("/saveAllConfigurations", methods=['POST'])
+def saveAllConfigurations():
+    try:
+        program = request.json['progname']
+    except Exception as e:
+        sys.stdout.write( 'The program is not defined (%s) \n' % (e))
+        return jsonify(status='ERROR', message=str(e))
+
+    try:
+        instrument = db[request.json['instrument']]
+        configurations = instrument.get_all_configs(program)
+    except Exception as e:
+        sys.stdout.write( 'Error retrieving configurations for program %s (%s) \n' % (program, e))
+        return jsonify(status='ERROR', message=str(e))
+
+    for configuration in configurations:
+        try:
+            instrument.save_state(configuration['id'])
+        except Exception as e:
+            sys.stdout.write( 'Error retrieving configuration %s (%s) \n' % (configuration['id'], e))
+            return jsonify(status='ERROR', message=str(e))
+
+    return jsonify(status='OK', message="All configurations have been saved to outdir")
+
+
+@application.route("/saveConfiguration",methods=['POST'])
+def saveConfiguration():
+    try:
+        instrument = db[request.json['instrument']]
+        configurationId = request.json['id']
+        configurationDetail = instrument.save_state(configurationId)
+        return jsonify(status='OK',message="State file saved successfully")
+
+    except Exception as e:
+        sys.stdout.write( 'Error is ' + str(e) + '\n')
+        return jsonify(status='ERROR',message=str(e))
+
+
+@application.route("/executeConfiguration",methods=['POST'])
+def executeConfiguration():
+    try:
+        instrument = db[request.json['instrument']]
+        configurationId = request.json['id']
+        configurationDetail = instrument.execute(configurationId)
+        return jsonify(status='OK',message="Execution was successful")
+
+    except Exception as e:
+        sys.stdout.write( 'Error is ' + str(e) + '\n')
+        return jsonify(status='ERROR',message=str(e))
+
+
+@application.route("/deleteConfiguration",methods=['POST'])
+def deleteConfiguration():
+    try:
+        instrument = db[request.json['instrument']]
+        configurationId = request.json['id']
+        instrument.delete(configurationId)
+        return jsonify(status='OK',message='deletion successful')
+    except Exception as e:
+        print(e)
+        return jsonify(status='ERROR',message=str(e))
+
+
+@application.route("/sendFile",methods=['POST'])
+def sendFile():
+    data={}
+    content = request.json['file'].split("\n")
+    program = request.json['progname']
+    filename = request.json['filename']
+    print(content)
+    print("Progname: %s \n" % program)
+    print("File name: %s \n" % filename)
+    for line in content:
+        print(line)
+        try:
+            key = line.split("=")[0].strip()
+            value = line.split("=")[1].strip()
+            data[key]=value
+        except:
+            pass
+    try:
+        instrument = db[request.json['instrument']]
+        instrument.put_from_file(data,program,filename)
+        return jsonify(status='OK',message="Configuration uploaded")
+    except Exception as e:
+        print("Failed to add to database\n")
+        return jsonify(status='ERROR',message="Failed to upload: %s" % (str(e)))
+    #print(data)
+
+
+def parseInstrumentList(inst):
+    l = []
+    for x in inst:
+        l+=x
+
+    instruments = [key for key in db.keys()]
+
+    returnList = []
+
+    for entry in l:
+        for instrument in instruments:
+            if entry in instrument:
+                returnList.append(entry)
+
+    print(returnList)
+
+    return returnList
+
+
+@application.route("/getAllowedPrograms",methods=['POST'])
+def getAllowedPrograms():
+    keck_id = str(request.json['keck_id'])
+    url = "http://www.keck.hawaii.edu/software/db_api/telSchedule.php?cmd=getScheduleByUser&obsid="+keck_id
+    headers = {'X-Requested-With': 'XMLHttpRequest'}
+
+    try:
+        observerData = json.loads(
+            urllib.request.urlopen(
+                urllib.request.Request(url+"&type=observer", headers=headers)
+            ).read().decode("utf8"))
+        obsDatList = [(entry["ProjCode"],entry["Instrument"]) for entry in observerData]
+    except:
+        print('No scheduled observer times')
+        obsDatList = []
+
+    try:
+        piData = json.loads(
+            urllib.request.urlopen(
+                urllib.request.Request(url+"&type=pi", headers=headers)
+            ).read().decode("utf8"))
+        piDatList = [(entry["ProjCode"],entry["Instrument"]) for entry in piData]
+    except:
+        print('No scheduled PI times')
+        piDatList = []
+
+    try:
+        toourl = 'https://www.keck.hawaii.edu/software/db_api/telSchedule.php?cmd=getToO&obsid='+keck_id+'semester=2018B'
+        tooData = json.loads(
+            urllib.request.urlopen(
+                urllib.request.Request(url, headers=headers)
+            ).read().decode("utf8"))
+        tooDatList = parseInstrumentList(
+                [(entry["InstrumentList"].split(" ")) for entry in tooData]
+            )
+    except:
+        print('No scheduled ToO requests')
+        tooDatList = []
+
+    return json.dumps(list(set(obsDatList + piDatList + tooDatList)))
+
+
+
+if __name__ == "__main__":
+    application.run(host='0.0.0.0', port=5002, debug=False)
