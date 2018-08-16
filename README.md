@@ -3,7 +3,7 @@ configuration manager tool for Keck 1 ToO
 
 Compilation using Angular CLI:
 
-`cd cd AngularConfManager/frontend/AngularConfManager/`
+`cd AngularConfManager/frontend/AngularConfManager/`
 
 To compile for the production server,
 
@@ -11,3 +11,5 @@ To compile for the production server,
 
 
 If the path needs to be changed, compile using a different --base-href flag.
+
+
