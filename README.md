@@ -12,7 +12,7 @@ Clone the repo:
 git clone https://github.com/KeckObservatory/TelescopeConfigManager/
 ```
 
-Install using the install-script. Optionally, set a build location (the default is `/inst/PILogin/ObservingTools/ConfigManager/`):
+Install using the install-script. Optionally, set a build location (the default is `/inst/PILogin/ObservingTools/ConfigManager/`). Note: this does not set where the build appears (it's always in `AngularConfManager/frontend/AngularConfManager/dist/`, but when deployed the build must be served from the base-href folder.
 ```
 ./install.sh
 ./install.sh /another/path/to/build/for
