@@ -5,8 +5,8 @@ AngularConfManager/frontend/AngularConfManager/out-tsc/*
 AngularConfManager/backend/lib/__pycache__
 
 # dependencies
-/node_modules
-AngularConfManager/frontend/node_modules
+/node_modules/*
+AngularConfManager/frontend/AngularConfManager/node_modules/*
 
 # IDEs and editors
 */.idea

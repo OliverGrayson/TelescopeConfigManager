@@ -31,6 +31,10 @@ export class NavComponent implements OnInit {
     url_instrument:string;
     url_semester:string;
 
+    // urls to connected ToO config programs
+    OOPGUI:string = "https://www.keck.hawaii.edu/inst/PILogin/ObservingTools/oopgui/oopgui.html";
+    TOORT:string = "https://www2.keck.hawaii.edu/inst/PILogin/too/";
+
     constructor(private http:CommunicationService,
                 private sharedCurrent:DataService,
                 private modal:ModalService,
@@ -244,6 +248,10 @@ export class NavComponent implements OnInit {
         }
 
         return "";
+    }
+
+    OSIRISredirect() {
+        window.location.href = this.OOPGUI;
     }
 
     onFileContentChange(event:any) {

@@ -12,7 +12,7 @@
             </li>
 
             <li role="presentation" class="active">
-                <a href="https://www2.keck.hawaii.edu/inst/PILogin/too/" target="_blank" >Submit ToO Request</a>
+                <a href="{{TOORT}}" target="_blank" >Submit ToO Request</a>
             </li>
         </ul>
     </div>
@@ -75,7 +75,7 @@
                         <span class="title animated fadeIn">{{key}}</span>
                     </label>
                     <label class="option" >
-                        <input type="radio" name="option" id="instrument-OSIRIS" href="https://www.keck.hawaii.edu/inst/PILogin/ObservingTools/oopgui/oopgui.html">
+                        <input type="radio" name="option" id="instrument-OSIRIS" (click)="OSIRISredirect()">
                         <span class="title animated fadeIn">OSIRIS</span>
                     </label>
                 </div>
