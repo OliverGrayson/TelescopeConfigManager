@@ -7,24 +7,33 @@ This project uses Angular 6 and Python 3.6
 
 ## Installation
 
+Clone the repo:
 ```
 git clone https://github.com/KeckObservatory/TelescopeConfigManager/
-./install.sh
 ```
 
-## Compilation using Angular CLI:
+Install using the install-script. Optionally, set a build location (the default is `/inst/PILogin/ObservingTools/ConfigManager/`):
+```
+./install.sh
+./install.sh /another/path/to/build/for
+```
 
-`cd AngularConfManager/frontend/AngularConfManager/`
+This will install all of the dependencies and compile the project.
+
+
+## Compiling manually using Angular CLI:
+
+```cd AngularConfManager/frontend/AngularConfManager/```
 
 To compile for the production server,
 
-`ng build --base-href=/inst/PILogin/ObservingTools/ConfigManager/ --prod`
+```ng build --base-href=/inst/PILogin/ObservingTools/ConfigManager/ --prod```
 
 If the path needs to be changed, compile using a different `--base-href` flag.
 
 ## Running the Flask server
 
-`cd AngularConfManager/backend`
+```cd AngularConfManager/backend```
 
 Nothing special needed here. Run using Python 3.6 or as an executable.
 
