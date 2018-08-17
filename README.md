@@ -33,10 +33,18 @@ python3.6 ConfigManager.sin
 ./ConfigManager.sin
 ```
 
-The server will listen on port 5002, modifiable from `AngularConfManager/backend/lib/database_config.py`
+The server will listen on port 5002.
+
+## Modifying settings
+
+Settings for the Python back-end, such as the port, the output directory, and the database name can be found in `AngularConfManager/backend/lib/database_config.py`.
+
+Settings for the front-end are slightly more split up:
+* URLs for the links to OOPGUI and ToORT are modifyable from `AngularConfManager/frontend/AngularConfManager/src/app/nav/nav.component.ts`
+* The server address can be found in `AngularConfManager/frontend/AngularConfManager/src/app/communication.service.ts`
+* Instrument definitions must be changed in both `AngularConfManager/backend/lib/` as their own Python files and in `AngularConfManager/frontend/AngularConfManager/src/app/json/instrumentConfData.json`
 
 ## Unfinished to-dos for this project:
 * add support for MOSFIRE's multi-keyword selector
   * MOSFIRE's `sampmode_text` selector needs to set multiple values, as described in `sampmode_relation` in InstrumentConfig.json
 * route the "save file" button to save .state files in a location more accessible to the instrument (currently they are saved in `AngularConfManager/AngularConfManager/backend/export/`.
-* provide working links in `nav.component.html` to ToORT and OOPGUI when all the tools go live
