@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import * as data from '../json/instrumentConfData.json';
+import * as config from '../json/config.json';
 import { CommunicationService } from '../communication.service';
 import { ModalService } from '../modal.service';
 import { Subscription } from 'rxjs';

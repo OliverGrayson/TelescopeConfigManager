@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { DataService } from './data.service';
 
+import * as config from './json/config.json';
+
 let httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -12,9 +14,8 @@ let httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class CommunicationService {
 
-    private serverURL = 'https://opsbuild:5002';  // URL to web api
+    private serverURL = config["serverURL"];  // URL to web api
     serverData: JSON;
-
 
     constructor(private httpClient: HttpClient, private sharedCurrent:DataService) { }
 

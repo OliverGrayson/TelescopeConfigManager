@@ -4,6 +4,7 @@ import { DataService } from '../data.service';
 import { ModalService } from '../modal.service';
 import { Subscription } from 'rxjs';
 import * as json_data from '../json/instrumentConfData.json';
+import * as config from '../json/config.json';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -32,8 +33,8 @@ export class NavComponent implements OnInit {
     url_semester:string;
 
     // urls to connected ToO config programs
-    OOPGUI:string = "https://www.keck.hawaii.edu/inst/PILogin/ObservingTools/oopgui/oopgui.html";
-    TOORT:string = "https://www2.keck.hawaii.edu/inst/PILogin/too/";
+    OOPGUI:string = config["oopgui"];
+    TOORT:string = config["toort"];
 
     constructor(private http:CommunicationService,
                 private sharedCurrent:DataService,
@@ -120,9 +121,6 @@ export class NavComponent implements OnInit {
         });
 
         this.show_opt,this.opt_show=false;this.inst_name="Instrument";
-
-
-
 
         this.sharedCurrent.set(this.current);
         this.subscription = this.sharedCurrent.currentMessage.subscribe((val) => {
