@@ -1,1 +1,3 @@
 *.DS_Store
+AngularConfManager/frontend/AngularConfManager/dist/*
+AngularConfManager/frontend/AngularConfManager/e2e
