@@ -9,6 +9,7 @@ This project uses Angular 6 and Python 3.6
 
 ```
 git clone https://github.com/KeckObservatory/TelescopeConfigManager/
+./install.sh
 ```
 
 ## Compilation using Angular CLI:
