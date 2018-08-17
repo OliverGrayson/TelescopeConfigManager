@@ -15,6 +15,19 @@ To compile for the production server,
 
 If the path needs to be changed, compile using a different `--base-href` flag.
 
+## Running the Flask server
+
+`cd AngularConfManager/backend`
+
+Nothing special needed here. Run using Python 3.6 or as an executable.
+
+```
+python3.6 ConfigManager.sin
+./ConfigManager.sin
+```
+
+The server will listen on port 5002, modifiable from `AngularConfManager/backend/lib/database_config.py`
+
 ## Unfinished to-dos for this project:
 * add support for MOSFIRE's multi-keyword selector
   * MOSFIRE's `sampmode_text` selector needs to set multiple values, as described in `sampmode_relation` in InstrumentConfig.json
