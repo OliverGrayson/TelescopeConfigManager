@@ -5,6 +5,12 @@ Written by Oliver Grayson and based on the KCWI Configuration Manager by Luca Ri
 
 This project uses Angular 6 and Python 3.6
 
+## Installation
+
+```
+git clone https://github.com/KeckObservatory/TelescopeConfigManager/
+```
+
 ## Compilation using Angular CLI:
 
 `cd AngularConfManager/frontend/AngularConfManager/`
