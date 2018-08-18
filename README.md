@@ -12,7 +12,7 @@ Clone the repo:
 git clone https://github.com/KeckObservatory/TelescopeConfigManager/
 ```
 
-Install using the install-script. Optionally, set a build location (the default is `/inst/PILogin/ObservingTools/ConfigManager/`):
+Install using the install-script. Optionally, set a build location (the default is `/inst/PILogin/ObservingTools/ConfigManager/`). Note: this does not set where the build appears (it's always in `AngularConfManager/frontend/AngularConfManager/dist/`), but when deployed the build must be served from the base-href folder.
 ```
 ./install.sh
 ./install.sh /another/path/to/build/for
@@ -46,11 +46,8 @@ The server will listen on port 5002.
 
 ## Modifying settings
 
-Settings for the Python back-end, such as the port, the output directory, and the database name can be found in `AngularConfManager/backend/lib/database_config.py`.
-
-Settings for the front-end are slightly more split up:
-* URLs for the links to OOPGUI and ToORT are modifyable from `AngularConfManager/frontend/AngularConfManager/src/app/nav/nav.component.ts`
-* The server address can be found in `AngularConfManager/frontend/AngularConfManager/src/app/communication.service.ts`
+* Settings for the Python back-end, such as the port, the output directory, and the database name can be found in `AngularConfManager/backend/lib/database_config.py`.
+* URLs for the links to OOPGUI and ToORT, as well as the server address can be modified in `AngularConfManager/frontend/AngularConfManager/src/app/json/config.json`
 * Instrument definitions must be changed in both `AngularConfManager/backend/lib/` as their own Python files and in `AngularConfManager/frontend/AngularConfManager/src/app/json/instrumentConfData.json`
 
 ## Unfinished to-dos for this project:
