@@ -6,6 +6,10 @@ import { Subject } from 'rxjs';
     providedIn: 'root'
 })
 export class ModalService {
+    // handles opening and closing modals
+    // mostly just opening them, the modals primarily close themselves
+    // the modal component subscribes to changes in this
+
     public popup = new Subject<any>();
 
     constructor() { }

@@ -23,7 +23,6 @@ import { TableComponent } from './table/table.component';
 import { CommunicationService } from './communication.service';
 import { DataService } from './data.service';
 import { ModalService } from './modal.service';
-import { ObjectFilterPipe } from './object-filter.pipe';
 
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -40,8 +39,7 @@ import { Route } from '@angular/router';
         ModalComponent,
         AddModalContent,
         LoginModalContent,
-        DeleteModalContent,
-        ObjectFilterPipe
+        DeleteModalContent
     ],
     imports: [
         BrowserModule,

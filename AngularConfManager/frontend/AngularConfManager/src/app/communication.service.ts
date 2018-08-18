@@ -13,6 +13,11 @@ let httpOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class CommunicationService {
+    // service for handling communication with the server
+    // these functions are mostly duplicated from Luca's original
+    // an important thing to note in TypeScript is that all of these http
+    // functions are marked "async" - they must be called from an async function
+    // and used with "await"
 
     private serverURL = config["serverURL"];  // URL to web api
     serverData: JSON;

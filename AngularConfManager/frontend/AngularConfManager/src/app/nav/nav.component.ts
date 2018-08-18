@@ -23,6 +23,7 @@ export class NavComponent implements OnInit {
 
     subscription:Subscription;
 
+    // default values so the selectors have something to display
     current:any = {"name":"Instrument","progname":"Program","semester":"Semester"};
 
     opt_show:boolean;show_opt:boolean;inst_name:string;sem_show:boolean;
@@ -50,15 +51,10 @@ export class NavComponent implements OnInit {
 
         this.data = this.getData();
 
-        // thanks https://gist.github.com/fentas/10289901
         let cookies = this.getCookieList();
 
         let permissions = await this.http.generateAllowedProgramList(cookies["keckID"]);
-        // // let permissions = {
-        // //     "allowedPrograms":['U263'],
-        // //     "allowedInstruments":['KCWI']
-        // // };
-        //
+
         if (!permissions) {
           // console.log("bad login")
             this.modal.show({
@@ -71,10 +67,13 @@ export class NavComponent implements OnInit {
         this.allowedPrograms = permissions["allowedPrograms"];
         this.allowedInstruments = permissions["allowedInstruments"];
 
+        // debug mode
         // this.allowedPrograms = ['U263', 'U202', 'E001', 'U199', '_test'];
         // this.allowedInstruments = ['KCWI', 'HIRES', 'LRIS', 'MOSFIRE'];
         this.allowedSemesters = ['2018B','2019A'];
 
+
+        // query the URL parameters to open a program/config on load
         this.route.queryParams
           .subscribe(async params => {
             // console.log("params", params);
@@ -143,6 +142,8 @@ export class NavComponent implements OnInit {
     }
 
     getCookieList() {
+        // thanks https://gist.github.com/fentas/10289901 for this ridiculous bit of regex
+
         let c = [];
         document.cookie.replace(
             /([^=;]+)=([^;]*)/gi,

@@ -2,9 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalService } from '../modal.service';
 import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { CommunicationService } from '../communication.service';
-import { ObjectFilterPipe } from '../object-filter.pipe';
 import { DataService } from '../data.service';
 
+
+// This file includes a Component for each modal.
+// They're fairly short and pretty much the same.
 
 @Component({
     selector: 'add-modal-content',
@@ -145,10 +147,6 @@ export class AddModalContent {
     constructor(public activeModal: NgbActiveModal,
                 private http:CommunicationService,
                 private sharedCurrent:DataService) {}
-
-    ngOnChanges(changes) {
-
-    }
 
     async addConfiguration() {
         let response = await this.http.addConfiguration(this._current);

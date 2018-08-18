@@ -3,6 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class DataService {
+    // this class handles sharing data between components
+    // specifically, dataSource is changed to the current instrument data
+    // each module that requires this data subscribe()s to the currentMessage
 
     dataSource = new BehaviorSubject({});
     currentMessage = this.dataSource.asObservable();
