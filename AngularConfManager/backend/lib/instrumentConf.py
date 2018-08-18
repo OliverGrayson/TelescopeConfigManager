@@ -2,11 +2,6 @@ import sys, os, subprocess
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-'''
-I actually don't think it's useful to subclass here when all it's doing
-is calling the super with a specific set of configurations. Easier
-to scale later/ port to Keck 2 if we just have configuration objects
-'''
 
 
 # configuration class

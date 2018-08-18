@@ -1,1 +1,33 @@
+# compiled output
+AngularConfManager/frontend/AngularConfManager/dist/*
+AngularConfManager/frontend/AngularConfManager/tmp/*
+AngularConfManager/frontend/AngularConfManager/out-tsc/*
+AngularConfManager/backend/lib/__pycache__
+
+# dependencies
+/node_modules/*
+AngularConfManager/frontend/AngularConfManager/node_modules/*
+
+# IDEs and editors
+*/.idea
+*.project
+*.classpath
+*.c9/
+*.launch
+*.settings/
+*.sublime-workspace
+
+
+# misc
+*/.sass-cache
+*/connect.lock
+*/coverage
+*/libpeerconnection.log
+*npm-debug.log
+*yarn-error.log
+*testem.log
+*/typings
+
+# System Files
 *.DS_Store
+*Thumbs.db
